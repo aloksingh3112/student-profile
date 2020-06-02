@@ -8,19 +8,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  paper: {
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    marginTop: 60,
-    height: 550,
-  },
   internal: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
+    fontWeight:"bold",
+    fontSize:16
   },
-  textField: {
-    padding: theme.spacing(1),
-  },
+ 
 }));
 
 function App() {
@@ -31,17 +25,23 @@ function App() {
       <Grid container>
         <Grid xs={3}></Grid>
         <Grid item xs={6}>
-          <Paper className={classes.paper}>
+          <Paper className="paper">
             <Grid container>
-              <Grid item xs={12} className={classes.textField}>
+            
+              <Grid item xs={12} className="textField">
                 <TextField id="standard-basic" placeholder="Search By Name" fullWidth />
               </Grid>
-              <Grid item xs={12} className={classes.textField}>
+              <Grid item xs={12}  className="textField2">
                 <TextField id="standard-basic" placeholder="search By Tag" fullWidth />
               </Grid>
-
-              <StudentList classes={classes}/>
               
+              <Grid item xs={12} style={{marginTop:80}}></Grid>
+              <StudentList classes={classes}/>
+              <StudentList classes={classes}/>
+              <StudentList classes={classes}/>
+              <StudentList classes={classes}/>
+              <StudentList classes={classes}/>
+             
             </Grid>
           </Paper>
         </Grid>
