@@ -1,0 +1,1 @@
+export const STUDENT_LISTS="https://www.hatchways.io/api/assessment/students";

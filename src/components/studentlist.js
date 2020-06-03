@@ -1,27 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Paper } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { average } from '../utils/helper';
 
-function StudentList({ classes }) {
+function StudentList({ classes, student }) {
+  const [isOpened, setIsOpened] = useState(false);
   return (
-    <Grid item xs={12} >
+    <Grid item xs={12}>
       <Paper className={classes.internal} square>
         <Grid container>
           <Grid item xs={3}>
-            <img
-              src="https://storage.googleapis.com/hatchways-app.appspot.com/assessments/data/frontend/images/voluptasdictablanditiis.jpg"
-              className="studentImages"
-            />
+            <img src={student.pic} className="studentImages" />
           </Grid>
-          <Grid item xs={7} className="content">
-            <p className="header">hello world </p>
-            <p>hello world</p>
-            <p>hello world</p>
-            <p>hello world</p>
-            </Grid>
-          <Grid item xs={2}>
-            <AddIcon onClick={()=>{console.log("hello")}} fontSize='large'/>
+          <Grid item xs={8} className="content">
+            <p className="header">
+              {student.firstName} {student.lastName}
+            </p>
+            <p>Email : {student.email}</p>
+            <p>Company : {student.company}</p>
+            <p>Skill :{student.skill}</p>
+            <p>Average :{average(student.grades)}%</p>
+            {isOpened && (
+              <div style={{ marginTop: 25 }}>
+                {student.grades.map((grade, i) => {
+                  return (
+                    <p key={i}>
+                      Test {i + 1} : {grade}%
+                    </p>
+                  );
+                })}
+              </div>
+            )}
+          </Grid>
+          <Grid item xs={1}>
+            {!isOpened && (
+              <AddIcon
+                onClick={() => {
+                  setIsOpened(true);
+                }}
+                fontSize="large"
+                className="icon"
+              />
+            )}
+            {isOpened && (
+              <RemoveIcon
+                onClick={() => {
+                  setIsOpened(false);
+                }}
+                fontSize="large"
+                className="icon"
+              ></RemoveIcon>
+            )}
           </Grid>
         </Grid>
       </Paper>
