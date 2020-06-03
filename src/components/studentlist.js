@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, Button, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { average } from '../utils/helper';
 
 function StudentList({ classes, student }) {
   const [isOpened, setIsOpened] = useState(false);
+  const [tags, setTags] = useState([]);
+
+  const addTag = (e) => {
+    if (e.key === 'Enter') {
+      const tagsData = [...tags, e.target.value];
+      setTags(tagsData);
+      e.target.value = '';
+    }
+  };
+
   return (
     <Grid item xs={12}>
       <Paper className={classes.internal} square>
@@ -30,6 +40,23 @@ function StudentList({ classes, student }) {
                     </p>
                   );
                 })}
+
+                {tags &&
+                  tags.length > 0 &&
+                  tags.map((tag, i) => {
+                    return (
+                      <Button variant="contained" key={i} className={classes.button}>
+                        {tag}
+                      </Button>
+                    );
+                  })}
+                <br></br>
+                <TextField
+                  id="standard-basic"
+                  placeholder="Add a tag"
+                  onKeyDown={addTag}
+                  className={classes.textfield}
+                />
               </div>
             )}
           </Grid>
