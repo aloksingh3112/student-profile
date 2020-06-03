@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import StudentList from './components/studentlist';
 import Axios from 'axios';
 import { STUDENT_LISTS } from './utils/url';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   internal: {
@@ -26,15 +27,17 @@ function App() {
   const classes = useStyles();
   const [studentData, setStudentData] = useState([]);
   const [studentToBerendered, setStudentToBerendered] = useState([]);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
     Axios.get(STUDENT_LISTS)
       .then((responseData) => {
-        console.log(responseData.data.students);
         setStudentData(responseData.data.students);
         setStudentToBerendered(responseData.data.students);
+        setIsDataLoaded(true);
       })
       .catch((err) => {
+        setIsDataLoaded(true);
         console.log(err);
       });
   }, []);
@@ -45,6 +48,7 @@ function App() {
       const fullname = student.firstName + student.lastName;
       return fullname.toLowerCase().includes(e.target.value.toLowerCase());
     });
+
     setStudentToBerendered(students);
   };
 
@@ -68,11 +72,15 @@ function App() {
               </Grid>
 
               <Grid item xs={12} style={{ marginTop: 80 }}></Grid>
-              {studentToBerendered &&
-                studentToBerendered.length > 0 &&
+              {!isDataLoaded ? (
+                <CircularProgress disableShrink className="loader" />
+              ) : studentToBerendered && studentToBerendered.length <= 0 ? (
+                <h3 style={{ marginLeft: 10 }}>No Data Found</h3>
+              ) : (
                 studentToBerendered.map((student, i) => {
                   return <StudentList classes={classes} student={student} key={i} />;
-                })}
+                })
+              )}
             </Grid>
           </Paper>
         </Grid>

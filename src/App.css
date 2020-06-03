@@ -40,3 +40,7 @@
 .icon {
   cursor: pointer;
 }
+
+.loader {
+  margin: 0 auto;
+}
