@@ -6,6 +6,7 @@ import StudentList from './components/studentlist';
 import Axios from 'axios';
 import { STUDENT_LISTS } from './utils/url';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { debounce } from 'throttle-debounce';
 
 const useStyles = makeStyles((theme) => ({
   internal: {
@@ -40,21 +41,27 @@ function App() {
       })
       .catch((err) => {
         setIsDataLoaded(true);
-        console.log(err);
       });
   }, []);
 
   const searchByName = (e) => {
-    const students = studentData.filter((student) => {
-      const fullname = student.firstName + student.lastName;
-      return fullname.toLowerCase().includes(e.target.value.toLowerCase().trim());
-    });
+    e.persist();
 
-    setStudentToBerendered(students);
+    debounce(300, () => {
+      const students = studentData.filter((student) => {
+        const fullname = student.firstName + student.lastName;
+        return fullname.toLowerCase().includes(e.target.value.toLowerCase().trim());
+      });
+
+      setStudentToBerendered(students);
+    })();
   };
 
   const searchByTag = (e) => {
-    setTags(e.target.value.trim());
+    e.persist();
+    debounce(300, () => {
+      setTags(e.target.value.trim());
+    })();
   };
 
   return (
