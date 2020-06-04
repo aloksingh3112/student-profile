@@ -1,7 +1,7 @@
 ## Project setup
 
-npm install
-npm start
+1. npm install
+2. npm start
 
 ## Project Overview
 
