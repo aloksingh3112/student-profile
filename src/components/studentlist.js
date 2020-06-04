@@ -24,7 +24,7 @@ function StudentList({ classes, student, tagsToSearch }) {
       isTagPresent = tags.some((substring) =>
         substring.toLowerCase().includes(tagsToSearch.toLowerCase())
       );
-
+    console.log(isTagPresent);
     if (isTagPresent) {
       setIsTagFound(true);
     } else {
