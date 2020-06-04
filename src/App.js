@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginLeft: 5,
     marginTop: 5,
+    textTransform: 'none',
   },
   textfield: {
     marginTop: 15,
@@ -28,6 +29,7 @@ function App() {
   const [studentData, setStudentData] = useState([]);
   const [studentToBerendered, setStudentToBerendered] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     Axios.get(STUDENT_LISTS)
@@ -43,13 +45,16 @@ function App() {
   }, []);
 
   const searchByName = (e) => {
-    console.log(e.target.value);
     const students = studentData.filter((student) => {
       const fullname = student.firstName + student.lastName;
-      return fullname.toLowerCase().includes(e.target.value.toLowerCase());
+      return fullname.toLowerCase().includes(e.target.value.toLowerCase().trim());
     });
 
     setStudentToBerendered(students);
+  };
+
+  const searchByTag = (e) => {
+    setTags(e.target.value.trim());
   };
 
   return (
@@ -68,17 +73,24 @@ function App() {
                 />
               </Grid>
               <Grid item xs={12} className="textField2">
-                <TextField id="standard-basic" placeholder="search By Tag" fullWidth />
+                <TextField
+                  id="standard-basic"
+                  placeholder="search By Tag"
+                  fullWidth
+                  onChange={searchByTag}
+                />
               </Grid>
 
               <Grid item xs={12} style={{ marginTop: 80 }}></Grid>
               {!isDataLoaded ? (
                 <CircularProgress disableShrink className="loader" />
               ) : studentToBerendered && studentToBerendered.length <= 0 ? (
-                <h3 style={{ marginLeft: 10 }}>No Data Found</h3>
+                <h3 style={{ marginLeft: 10 }}>No Student Found</h3>
               ) : (
                 studentToBerendered.map((student, i) => {
-                  return <StudentList classes={classes} student={student} key={i} />;
+                  return (
+                    <StudentList classes={classes} student={student} key={i} tagsToSearch={tags} />
+                  );
                 })
               )}
             </Grid>

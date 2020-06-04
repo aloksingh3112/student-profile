@@ -4,9 +4,10 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { average } from '../utils/helper';
 
-function StudentList({ classes, student }) {
+function StudentList({ classes, student, tagsToSearch }) {
   const [isOpened, setIsOpened] = useState(false);
   const [tags, setTags] = useState([]);
+  const [isTagFound, setIsTagFound] = useState(false);
 
   const addTag = (e) => {
     if (e.key === 'Enter') {
@@ -16,7 +17,22 @@ function StudentList({ classes, student }) {
     }
   };
 
-  return (
+  React.useEffect(() => {
+    let isTagPresent = true;
+
+    if (tagsToSearch != '')
+      isTagPresent = tags.some((substring) =>
+        substring.toLowerCase().includes(tagsToSearch.toLowerCase())
+      );
+
+    if (isTagPresent) {
+      setIsTagFound(true);
+    } else {
+      setIsTagFound(false);
+    }
+  }, [tagsToSearch]);
+
+  return !isTagFound ? null : (
     <Grid item xs={12}>
       <Paper className={classes.internal} square>
         <Grid container>
